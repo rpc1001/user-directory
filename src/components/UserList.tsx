@@ -13,26 +13,41 @@ export default function UserList({
   searchQuery 
 }: UserListProps) {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [sortCriteria, setSortCriteria] = useState<'name' | 'email'>('name');
 
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredUsers(users);
-      return;
+    let filtered = users;
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = users.filter(user =>
+        user.name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.username.toLowerCase().includes(query)
+      );
     }
 
-    const query = searchQuery.toLowerCase().trim();
-    const filtered = users.filter(user =>
-      user.name.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query) ||
-      user.username.toLowerCase().includes(query)
-    );
-    
-    setFilteredUsers(filtered);
-  }, [searchQuery, users]);
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortCriteria === 'name') {
+        return a.name.localeCompare(b.name);
+      } else {
+        return a.email.localeCompare(b.email);
+      }
+    });
+
+    setFilteredUsers(sorted);
+  }, [searchQuery, users, sortCriteria]);
 
   return (
     <div className="user-list-container">
       <h2>Users Directory</h2>
+      
+      <div className="sort-options">
+        <label>Sort by: </label>
+        <select value={sortCriteria} onChange={(e) => setSortCriteria(e.target.value as 'name' | 'email')}>
+          <option value="name">Name</option>
+          <option value="email">Email</option>
+        </select>
+      </div>
       
       <div className="user-list">
         {filteredUsers.map(user => (
