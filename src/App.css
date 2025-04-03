@@ -2,17 +2,24 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .app-container {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  position: static;
+  display: block;
 }
 
 header {
   margin-bottom: 2rem;
   text-align: center;
+  position: static;
 }
 
 header h1 {
@@ -34,6 +41,9 @@ header h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
+  overflow-y: auto;
+  animation: slideBack 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .user-card {
@@ -41,8 +51,12 @@ header h1 {
   border-radius: 8px;
   padding: 1.5rem;
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease;
   border: 1px solid transparent;
+  opacity: 0;
+  animation: fadeIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .user-card:hover {
@@ -60,48 +74,216 @@ header h1 {
   margin-bottom: 0;
 }
 
+.user-card:nth-child(1) { animation-delay: 0.05s; }
+.user-card:nth-child(2) { animation-delay: 0.1s; }
+.user-card:nth-child(3) { animation-delay: 0.15s; }
+.user-card:nth-child(4) { animation-delay: 0.2s; }
+.user-card:nth-child(5) { animation-delay: 0.25s; }
+.user-card:nth-child(6) { animation-delay: 0.3s; }
+.user-card:nth-child(7) { animation-delay: 0.35s; }
+.user-card:nth-child(8) { animation-delay: 0.4s; }
+.user-card:nth-child(9) { animation-delay: 0.45s; }
+.user-card:nth-child(10) { animation-delay: 0.5s; }
+
 /* User Detail Styles */
 .user-detail {
   background-color: #1a1a1a;
   border-radius: 8px;
   padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  margin: 0 auto;
+  animation: slideIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.user-detail > div {
+  animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s backwards;
+  will-change: transform, opacity;
+}
+
+.user-detail h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+}
+
+.user-detail > div > div {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #cccccc;
+}
+
+.user-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 600px) {
+  .user-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.user-info > div {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.2rem;
+  border-radius: 6px;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
+  opacity: 0;
+  animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.user-info > div:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.user-info > div:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.user-info > div:nth-child(3) {
+  animation-delay: 0.5s;
+  grid-column: 1 / -1;
+}
+
+.user-info > div:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.user-info h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #646cff;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.user-info a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.user-info a:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .user-detail {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-detail h2 {
+    color: #333;
+    border-bottom-color: #ddd;
+  }
+  
+  .user-detail > div > div {
+    color: #666;
+  }
+  
+  .user-info > div {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  .user-info > div:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* Search Bar Styles */
+.search-bar input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Sort Options Styles */
+.sort-options {
+  margin-bottom: 1rem;
+}
+
+.sort-options select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: #333;
+  color: #f0f0f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 0.65rem auto;
+}
+
+/* Animation Styles */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideBack {
+  from {
+    transform: translateX(-25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .back-button {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   background: none;
   border: none;
   color: #646cff;
   cursor: pointer;
   padding: 0.5rem 0;
   font-size: 1rem;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s;
 }
 
 .back-button:hover {
-  text-decoration: underline;
-}
-
-.user-info {
-  margin-top: 1.5rem;
-}
-
-.user-info h3 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #646cff;
-}
-
-@media (prefers-color-scheme: light) {
-  .user-card {
-    background-color: #f9f9f9;
-  }
-  
-  .user-card h3 {
-    color: #213547;
-  }
-
-  .user-detail {
-    background-color: #f9f9f9;
-  }
+  color: #868eff;
 }

@@ -18,16 +18,16 @@ export default function UserDetail({ user, onBack }: UserDetailProps) {
       <div>
         <h2>{user.name}</h2>
         <div>
-          <p>@{user.username}</p>
-          <p>{user.email}</p>
+          <p><strong>Username:</strong> @{user.username}</p>
+          <p><strong>Email:</strong> {user.email}</p>
         </div>
 
-        <div>
+        <div className="user-info">
           <div>
             <h3>Contact Information</h3>
-            <p>{user.phone}</p>
+            <p><strong>Phone:</strong> {user.phone}</p>
             <p>
-              <a href={`https://${user.website}`} target="_blank" rel="noopener noreferrer">
+              <strong>Website:</strong> <a href={`https://${user.website}`} target="_blank" rel="noopener noreferrer">
                 {user.website}
               </a>
             </p>
@@ -35,15 +35,16 @@ export default function UserDetail({ user, onBack }: UserDetailProps) {
 
           <div>
             <h3>Address</h3>
-            <p>{user.address.suite}, {user.address.street}</p>
-            <p>{user.address.city}, {user.address.zipcode}</p>
+            <p><strong>Street:</strong> {user.address.suite}, {user.address.street}</p>
+            <p><strong>City:</strong> {user.address.city}</p>
+            <p><strong>Zipcode:</strong> {user.address.zipcode}</p>
           </div>
           
           <div>
             <h3>Company</h3>
-            <p>{user.company.name}</p>
-            <p>"{user.company.catchPhrase}"</p>
-            <p>{user.company.bs}</p>
+            <p><strong>Name:</strong> {user.company.name}</p>
+            <p><strong>Motto:</strong> "{user.company.catchPhrase}"</p>
+            <p><strong>Business:</strong> {user.company.bs}</p>
           </div>
         </div>
       </div>

@@ -39,7 +39,6 @@ export default function UserList({
 
   return (
     <div className="user-list-container">
-      <h2>Users Directory</h2>
       
       <div className="sort-options">
         <label>Sort by: </label>
