@@ -1,34 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import { User } from './types'
+import UserList from './components/UserList'
+import UserDetail from './components/UserDetail'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('https://jsonplaceholder.typicode.com/users')
+        if (!response.ok) {
+          throw new Error('Failed to fetch users')
+        }
+        const data = await response.json()
+        setUsers(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  // Go back to the user list
+  const handleBackToList = () => {
+    setSelectedUser(null)
+  }
+
+  // Handle search
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      <header>
+        <h1>User Directory</h1>
+      </header>
+      
+      <main>
+        {loading && <p className="loading">Loading users...</p>}
+        {error && <p className="error">Error: {error}</p>}
+        
+        {!loading && !error && (
+          <>
+            {!selectedUser && (
+              <div className="search-bar">
+                <input
+                  type="text"
+                  placeholder="Search users..."
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                />
+              </div>
+            )}
+            
+            {selectedUser ? (
+              // User detail view
+              <UserDetail 
+                user={selectedUser} 
+                onBack={handleBackToList} 
+              />
+            ) : (
+              // User list view
+              <UserList 
+                users={users} 
+                onSelectUser={setSelectedUser} 
+                searchQuery={searchQuery} 
+              />
+            )}
+          </>
+        )}
+      </main>
+    </div>
   )
 }
 
